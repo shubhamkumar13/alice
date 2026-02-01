@@ -15,10 +15,11 @@ let command { filename; env } ~args = Command.create filename ~args env
 module Depend = struct
   let command ocaml_compiler args = command ocaml_compiler ~args:("-depend" :: args)
 
-  let run_lines ocaml_compiler io_ctx args =
+  let run_lines ocaml_compiler (io_ctx : _ Alice_io.Io_ctx.t) args =
     let command = command ocaml_compiler args in
-    Alice_io.Process.Eio.run_command_capturing_stdout_lines io_ctx command
-    |> Alice_io.Process.Eio.result_ok_or_exn
+    Alice_io.Concurrency.Limit.run io_ctx.limit ~f:(fun () ->
+      Alice_io.Process.Eio.run_command_capturing_stdout_lines io_ctx command
+      |> Alice_io.Process.Eio.result_ok_or_exn)
   ;;
 
   module Deps = struct
