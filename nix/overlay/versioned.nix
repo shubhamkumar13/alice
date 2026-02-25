@@ -64,13 +64,17 @@ final: prev: {
               version = "0.4.0";
               hash = "sha256-/PuCDBedACkFepJa8j1DF/lRc7nE3Y2EpXkpbBTSwak=";
             };
+            "0_5_0" = {
+              version = "0.5.0";
+              hash = "sha256-oOBadT+dVJispd6rHU7cf8PBd9PO9vnmv1MhJhcLwX0==";
+            };
 
           };
     in
     prev.alicecaml.overrideScope (
       ofinal: oprev: {
         versioned = versioned // {
-          latest = versioned."0_4_0";
+          latest = versioned."0_5_0";
         };
       }
     );
