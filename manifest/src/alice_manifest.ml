@@ -2,6 +2,7 @@ open! Alice_stdlib
 open Alice_hierarchy
 open Alice_error
 open Alice_package_meta
+module Lockfile = Lockfile
 
 let manifest_name = Basename.of_filename "Alice.kdl"
 
@@ -149,7 +150,8 @@ module Parse_kdl_manifest = struct
     let name = "name"
     let version = "version"
     let dependencies = "dependencies"
-    let all = [ name; version; dependencies ]
+    let opam_dependencies = "opam_dependencies"
+    let all = [ name; version; dependencies; opam_dependencies ]
   end
 
   let package_node_children (children : Kdl.node list) =
@@ -169,6 +171,7 @@ module Parse_kdl_manifest = struct
     let name = find_node F.name in
     let version = find_node F.version in
     let dependencies = find_node F.dependencies in
+    let opam_dependencies = find_node F.opam_dependencies in
     match name, version with
     | None, _ ->
       Error [ Pp.textf "Node \"package\" is missing required field: %S" F.name ]
@@ -184,6 +187,13 @@ module Parse_kdl_manifest = struct
         | Some dependencies ->
           let+ dependencies = dependencies_node dependencies in
           Some dependencies
+      in
+      let* _opam_dependencies =
+        match opam_dependencies with
+        | None -> Ok None
+        | Some node ->
+          let+ lock = Lockfile.of_kdl node in
+          Some lock
       in
       let meta = Package_meta.create ~id ~dependencies in
       Ok meta

@@ -1,6 +1,7 @@
 open! Alice_stdlib
 open Climate
 module Tools = Tools
+module Add = Add
 
 let version = "0.5-dev"
 
@@ -32,6 +33,7 @@ Run `alice --help` for usage information.|}
     ; Run.subcommand
     ; subcommand "help" help
     ; Internal.subcommand
+    ; Add.subcommand
     ]
 ;;
 

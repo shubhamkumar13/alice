@@ -7,4 +7,5 @@
   alice_hierarchy
   alice_package_meta
   alice_io
-  kdl))
+  kdl
+  containers))

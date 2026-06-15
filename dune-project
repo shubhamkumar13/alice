@@ -30,6 +30,7 @@
   sha
   dyn
   fileutils
+  containers
   pp
   (re
    (>= "1.12"))

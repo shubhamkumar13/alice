@@ -1,0 +1,6 @@
+package {
+  name "test_lockfile"
+  version "0.1.0"
+  opam_dependencies {
+  }
+}
