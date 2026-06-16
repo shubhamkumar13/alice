@@ -8,4 +8,5 @@
   alice_package_meta
   alice_io
   kdl
-  containers))
+  containers
+  alice_types))

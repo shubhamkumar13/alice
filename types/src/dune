@@ -1,0 +1,4 @@
+(library
+ (package alice)
+ (name alice_types)
+ (libraries alice_stdlib))

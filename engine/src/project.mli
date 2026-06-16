@@ -8,6 +8,7 @@ open Alice_ocaml_compiler
     package dependency graph. *)
 type t
 
+val package : t -> Package.t
 val of_package : Package.t -> t
 
 val build

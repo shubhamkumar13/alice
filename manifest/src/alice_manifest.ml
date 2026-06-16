@@ -5,6 +5,10 @@ open Alice_package_meta
 module Lockfile = Lockfile
 
 let manifest_name = Basename.of_filename "Alice.kdl"
+let ( let* ) = Result.O.( let* )
+let ( let+ ) = Result.O.( let+ )
+let ( let** ) = CCOption.( let* )
+let ( let++ ) = CCOption.( let+ )
 
 module Parse_kdl_manifest = struct
   let simple_string_node (node : Kdl.node) =
@@ -51,7 +55,6 @@ module Parse_kdl_manifest = struct
   end
 
   let dependency_node (node : Kdl.node) =
-    let open Result.O in
     match node with
     | { annot = Some annot; _ } ->
       Error
@@ -171,7 +174,6 @@ module Parse_kdl_manifest = struct
     let name = find_node F.name in
     let version = find_node F.version in
     let dependencies = find_node F.dependencies in
-    let opam_dependencies = find_node F.opam_dependencies in
     match name, version with
     | None, _ ->
       Error [ Pp.textf "Node \"package\" is missing required field: %S" F.name ]
@@ -188,14 +190,14 @@ module Parse_kdl_manifest = struct
           let+ dependencies = dependencies_node dependencies in
           Some dependencies
       in
-      let* _opam_dependencies =
-        match opam_dependencies with
-        | None -> Ok None
-        | Some node ->
-          let+ lock = Lockfile.of_kdl node in
-          Some lock
+      let* opam_deps =
+        let opam_deps = find_node F.opam_dependencies in
+        match opam_deps with
+        | None -> Error [ Alice_stdlib.Pp.text "Cannot parse opam_dependencies field" ]
+        | Some node -> Lockfile.of_kdl node
       in
-      let meta = Package_meta.create ~id ~dependencies in
+      let meta = opam_deps.meta in
+      let opam_deps = opam_deps.opam_deps in
       Ok meta
   ;;
 

@@ -11,6 +11,7 @@ type t =
   ; package : Package.t
   }
 
+let package { package; _ } = package
 let build_dir_path_relative_to_project_root = Basename.of_filename "build"
 
 let of_package package =
