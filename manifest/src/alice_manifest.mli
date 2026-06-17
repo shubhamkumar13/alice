@@ -1,6 +1,7 @@
 open! Alice_stdlib
 open Alice_hierarchy
 open Alice_package_meta
+module Lockfile = Lockfile
 
 val manifest_name : Basename.t
 val read_package_dir : dir_path:_ Absolute_path.t -> Package_meta.t

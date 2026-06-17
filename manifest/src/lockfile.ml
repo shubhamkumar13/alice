@@ -3,22 +3,19 @@
 open ContainersLabels
 
 module LockfileTy = struct
-  include Alice_types
+  module LockfileTy = Alice_types.Lockfile_types
 
-  type dep_t = Lockfile_types.locked_dep
-  type deps_t = Lockfile_types.locked_dep list
-  type t = Lockfile_types.t
+  type dep_t = LockfileTy.locked_dep
+  type deps_t = dep_t list
+  type t = LockfileTy.t
 
-  let create (version : string) (deps : deps_t) : t = { version; resolved_deps = deps }
+  let create ver deps = { LockfileTy.version = ver; LockfileTy.resolved_deps = deps }
+  let name x = { LockfileTy.name = String.trim x }
+  let names x = List.map ~f:name x
 end
 
-(* type t = *)
-(* { meta : Package_meta.t *)
-(* ; opam_deps : Lockfile_types.t option *)
-(* } *)
-
 let ( let* ) = Containers.Result.( let* )
-let create version deps = LockfileTy.create
+let create = LockfileTy.create
 
 let of_kdl (node : Kdl.node) : (LockfileTy.t, 'a) result =
   let parse_child (child : Kdl.node) : (LockfileTy.dep_t, 'a) result =

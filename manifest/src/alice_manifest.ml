@@ -196,8 +196,7 @@ module Parse_kdl_manifest = struct
         | None -> Error [ Alice_stdlib.Pp.text "Cannot parse opam_dependencies field" ]
         | Some node -> Lockfile.of_kdl node
       in
-      let meta = opam_deps.meta in
-      let opam_deps = opam_deps.opam_deps in
+      let meta = Package_meta.create ~id ~dependencies in
       Ok meta
   ;;
 

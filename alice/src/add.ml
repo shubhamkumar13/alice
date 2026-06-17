@@ -9,6 +9,10 @@ let add =
   and+ project = Common.parse_project in
   let package = Project.package project in
   let _meta = Package.meta package in
+  let lock = Lock_engine.of_package package in
+  (match Lock_engine.resolve lock with
+  | Ok _ -> print_endline "Dependencies resolved."
+  | Error e -> print_endline e);
   exit 0
 ;;
 
