@@ -29,6 +29,15 @@ val run
 
 val clean : t -> unit
 
+val add
+  : t
+  -> Profile.t
+  -> Alice_env.Os_type.t
+  -> Ocaml_compiler.t
+  -> Alice_io.Num_jobs.t
+  -> args: string list
+  -> unit
+
 val dot_build_artifacts
   :  t
   -> Alice_env.Os_type.t

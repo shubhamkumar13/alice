@@ -32,6 +32,7 @@ Run `alice --help` for usage information.|}
     ; Run.subcommand
     ; subcommand "help" help
     ; Internal.subcommand
+    ; Add.subcommand
     ]
 ;;
 
